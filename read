@@ -1,0 +1,8 @@
+1. создаем проект web
+django-admin startproject web .
+
+2. создание приложения
+django-admin startapp core
+
+2. запуск сервера
+python manage.py runserver
