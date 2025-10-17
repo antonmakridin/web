@@ -9,125 +9,24 @@
 </head>
 
 <body>
-    <header>
+    <header class="mainh">
         <nav>
             <ul class="menu">
-                <li class="menu-elem"><a href="#">Главная</a></li>
-                <li class="menu-elem"><a href="#">Создание сайта</a>
+                <li class="menu-elem"><a href="/">Главная</a></li>
+                <li class="menu-elem"><a href="#">Меню</a>
                     <ul class="fall-menu">
-                        <li class="fall-menu-elem"><a href="#etap">Этапы</a></li>
-                        <li class="fall-menu-elem"><a href="#tsena">Стоимость</a></li>
+                        <li class="fall-menu-elem"><a href="/catalog">Каталог</a></li>
                     </ul>
                 </li>
-                <li class="menu-elem"><a href="#call">Контакты</a></li>
             </ul>
         </nav>
         <section class="info">
-            <h1>Сайт-визитка</h1>
-            <p>{{name_template}}</p>
-            <p>Мой не первый одностраничный сайт</p>
-            <a href="#call" class="cta">Заказать звонок</a>
+            <h1>{{title_template}}</h1>
+            <p>сайт по продаже книг</p>
+
+            <a href="/catalog" class="cta">Посмотреть каталог</a>
         </section>
     </header>
-    <main>
-        <section class="blockone" id="etap">
-            <div class="blockone-header">
-                Этапы создания сайта
-            </div>
-            <div class="blockone-grid">
-                <div class="blockone-grid-one">
-                    <h3>Этап 1</h3>
-                    <p>Исследование и планирование</p>
-                </div>
-                <div class="blockone-grid-one">
-                    <h3>Этап 2</h3>
-                    <p>Дизайн и визуальное оформление</p>
-                </div>
-                <div class="blockone-grid-one">
-                    <h3>Этап 3</h3>
-                    <p>Фронтенд—разработка</p>
-                </div>
-                <div class="blockone-grid-one">
-                    <h3>Этап 4</h3>
-                    <p>Бэкенд—разработка</p>
-                </div>
-                <div class="blockone-grid-one">
-                    <h3>Этап 5</h3>
-                    <p>Тестирование и отладка</p>
-                </div>
-                <div class="blockone-grid-one">
-                    <h3>Этап 6</h3>
-                    <p>Запуск и оптимизация</p>
-                </div>
-            </div>
-        </section>
-        <section class="blocktwo" id="tsena">
-            <div class="blocktwo-header">
-                Стоимость создания сайта
-            </div>
-            <div class="blocktwo-grid">
-                <div class="blocktwo-grid-one">
-                    <h3>Исследование и планирование</h3>
-                    <p class="text">Этап исследования и планирования является одним из ключевых этапов разработки. На этом этапе происходит сбор информации, анализ целей и задач ресурса, а также определение его целевой аудитории. Результаты исследования и планирования служат основой для дальнейшей реализации.</p>
-                    <p class="price">от 15 000<span>₽</span></p>
-                </div>
-                <div class="blocktwo-grid-one">
-                    <h3>Дизайн и визуальное оформление</h3>
-                    <p class="text">После планирования можно приступать к проработке вариантов дизайна и визуального оформления. Создайте уникальный дизайн, отражающий бренд и цели ресурса. Дизайнеры разрабатывают графические элементы, логотипы, иконки, выбирают цветовую палитру и шрифты. Важным аспектом этого этапа является создание макетов страниц и интерфейса пользователя, чтобы визуализировать и оценить внешний вид сайта.</p>
-                    <p class="price">от 5 000<span>₽</span></p>
-                </div>
-                <div class="blocktwo-grid-one">
-                    <h3>Фронтенд—разработка</h3>
-                    <p class="text">Процесс кодирования макетов дизайна с использованием языков разметки HTML и CSS. Разработчики создают структуру, вставляют графические элементы и настраивают визуальное оформление. Важным аспектом фронтенд—разработки является создание адаптивного дизайна, который позволяет сайту корректно отображаться на разных устройствах и экранах. Также на этом этапе внедряются интерактивные элементы с помощью JavaScript, такие как меню, формы и слайдеры.</p>
-                    <p class="price">от 5 000<span>₽</span></p>
-                </div>
-                <div class="blocktwo-grid-one">
-                    <h3>Бэкенд—разработка</h3>
-                    <p class="text">Этап, на котором создается серверная логика и база данных, которые обеспечивают функциональность сайта. Разработчики выбирают язык программирования, такой как PHP, Python или Ruby, и фреймворк для более эффективной работы. Они реализуют функциональность: обработку форм, авторизацию пользователей, взаимодействие с базой данных.</p>
-                    <p class="price">от 5 000<span>₽</span></p>
-                </div>
-                <div class="blocktwo-grid-one">
-                    <h3>Тестирование и отладка</h3>
-                    <p class="text">Разработчики проводят тестирование и отладку, чтобы проверить работоспособность и корректность функциональности нового ресурса. Они выполняют проверку на различных устройствах и браузерах, чтобы убедиться, что сайт выглядит и функционирует одинаково хорошо во всех условиях.</p>
-                    <p class="price">от 5 000<span>₽</span></p>
-                </div>
-                <div class="blocktwo-grid-one">
-                    <h3>Запуск и оптимизация</h3>
-                    <p class="text">Этап запуска и оптимизации является последним этапом в процессе созданиясайта. На этом этапе он готовится к публикации и настройке для обеспечения его эффективной работы и удовлетворения потребностей пользователей. Рассмотрим подробнее этот этап.</p>
-                    <p class="price">от 5 000<span>₽</span></p>
-                </div>
-            </div>
-        </section>
-        <section class="blockthree">
-            <div class="blockthree-header">
-                Напишите мне
-            </div>
-            <div class="container">
-                <div class="left">
-                    <div class="forma">
-                        <form id="call" method="POST">
-                            <div>
-                                <input type="text" class="form-input" placeholder="Введите имя">
-                            </div>
-                            <div>
-                                <input type="text" class="form-input" placeholder="Введите телефон">
-                            </div>
-                            <div>
-                                <button class="cta">Отправить</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="right">
-                    <div class="social">
-                        <div>Социальные сети</div>
-                        <a href="#"><img alt="vk" src="https://pngicon.ru/file/uploads/vk.png"></a>
-                        <a href="#"><img alt="tg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Telegram_2019_Logo.svg/2048px-Telegram_2019_Logo.svg.png"></a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
     <footer>
         <div class="footer">
             Created by Makridin

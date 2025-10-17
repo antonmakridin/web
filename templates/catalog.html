@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <title>Каталог</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    </head>
+    <body>
+    <header>
+        <nav>
+            <ul class="menu">
+                <li class="menu-elem"><a href="/">Главная</a></li>
+                <li class="menu-elem"><a href="#">Меню</a>
+                    <ul class="fall-menu">
+                        <li class="fall-menu-elem"><a href="/catalog">Каталог</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+        <main class="main">
+            <div class="product-grid">
+                <div class="product-card">
+                    <img src="{{image1}}">
+                    <div class="product-info">
+                        <h3 class="product-title">{{book1}}</h3>
+                        <p class="product-price">1000 ₽</p>
+                        <a href="#" class="buy-button">Нажми сюда</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="{{image2}}">
+                    <div class="product-info">
+                        <h3 class="product-title">{{book2}}</h3>
+                        <p class="product-price">1000 ₽</p>
+                        <a href="#" class="buy-button">Нажми сюда</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <img src="{{image3}}">
+                    <div class="product-info">
+                        <h3 class="product-title">{{book3}}</h3>
+                        <p class="product-price">1000 ₽</p>
+                        <a href="#" class="buy-button">Нажми сюда</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <div class="footer">
+                Created by Makridin
+            </div>
+        </footer>
+    </body>
+</html>
