@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <title>{{title_template}} - Каталог</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    </head>
+    <body>
+    <header>
+        <nav>
+            <ul class="menu">
+                <li class="menu-elem"><a href="/">Главная</a></li>
+                <li class="menu-elem"><a href="#">Меню</a>
+                    <ul class="fall-menu">
+                        <li class="fall-menu-elem"><a href="/products">Каталог</a></li>
+                    </ul>
+                </li>
+                <li class="menu-elem"><a href="/branch">Филиалы</a></li>
+            </ul>
+        </nav>
+    </header>
+        <main class="main">
+            <div class="zagolovok">
+                <h1>
+                    Филиалы
+                </h1>
+            </div>
+            <div class="product-grid">
+                {% for branch in branch_list %}
+                <div class="product-card">
+                    <img src="{{ image1 }}">
+                    <div class="product-info">
+                        <h3 class="product-title">{{ branch.name }}</h3>
+                        <p class="product-price">{{ branch.address }} р.</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </main>
+        <footer>
+            <div class="footer">
+                Created by Makridin
+            </div>
+        </footer>
+    </body>
+</html>

@@ -11,6 +11,13 @@ nav {
     background-color:rgba(240, 255, 255, 0.7);
 }
 
+.zagolovok {
+    height:50px;
+    width:100%;
+    margin: 0 auto;
+    text-align: center;
+}
+
 .menu {
     list-style: none;
     padding: 0;
@@ -305,7 +312,6 @@ footer {
 }
 
 .main {
-    display: flex;
     align-items: start;
 }
 .product-grid{
@@ -328,6 +334,10 @@ footer {
 .product-price {
     font-weight: 700;
     margin-top: auto;
+}
+.product-price-discount {
+    color: red;
+    font-weight: 700;
 }
 .buy-button {
     display: block;

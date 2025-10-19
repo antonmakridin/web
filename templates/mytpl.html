@@ -3,7 +3,7 @@
 <html lang="ru">
 
 <head>
-    <title>Сайт-визитка</title>
+    <title>{{title_template}}</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
@@ -15,16 +15,17 @@
                 <li class="menu-elem"><a href="/">Главная</a></li>
                 <li class="menu-elem"><a href="#">Меню</a>
                     <ul class="fall-menu">
-                        <li class="fall-menu-elem"><a href="/catalog">Каталог</a></li>
+                        <li class="fall-menu-elem"><a href="/products">Каталог</a></li>
                     </ul>
                 </li>
+                <li class="menu-elem"><a href="/branch">Филиалы</a></li>
             </ul>
         </nav>
         <section class="info">
             <h1>{{title_template}}</h1>
             <p>сайт по продаже книг</p>
 
-            <a href="/catalog" class="cta">Посмотреть каталог</a>
+            <a href="/products" class="cta">Посмотреть каталог</a>
         </section>
     </header>
     <footer>
