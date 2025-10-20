@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <title>{{title_template}}</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <header class="mainh">
+        <nav>
+            <ul class="menu">
+                <li class="menu-elem"><a href="/">Главная</a></li>
+                <li class="menu-elem"><a href="#">Меню</a>
+                    <ul class="fall-menu">
+                        <li class="fall-menu-elem"><a href="/products">Каталог</a></li>
+                    </ul>
+                </li>
+                <li class="menu-elem"><a href="/branch">Филиалы</a></li>
+            </ul>
+        </nav>
+        <section class="info">
+            <h1>{{title_template}}</h1>
+            <p>сайт по продаже книг</p>
+        </section>
+    </header>
+    <main class="main">
+        <div class="product-grid">
+            
+            {% for book in books_list %}
+            <div class="product-card">
+                <div class="product-info">
+                    <h3 class="product-title">{{ book.title }}</h3>
+                    <img class="one_genre" src="/media/{{ book.cover_image }}" >
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+    <footer>
+        <div class="footer">
+            Created by Makridin
+        </div>
+    </footer>
+</body>
+
+</html>

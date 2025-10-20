@@ -6,3 +6,14 @@ django-admin startapp core
 
 2. запуск сервера
 python manage.py runserver
+
+
+
+для работы с изображениями
+pip install Pillow
+
+
+миграции
+python manage.py makemigrations core
+python manage.py migrate
+

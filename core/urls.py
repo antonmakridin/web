@@ -7,4 +7,6 @@ urlpatterns = [
     path('catalog/', catalog),
     path('products/', products),
     path('branch/', branch),
+    path('book_in_genre/', book_in_genre),
+    # path('genres/', genres),
 ]

@@ -3,10 +3,6 @@
     padding: 0;
 }
 
-.mainh {
-    min-height: calc(100vh - 100px);
-}
-
 nav {
     background-color:rgba(240, 255, 255, 0.7);
 }
@@ -61,12 +57,9 @@ nav {
 
 .info {
     text-align: center;
-    padding: 40px 20px;
+    padding: 20px 20px;
     max-width: 400px;
     margin: auto;
-    border: 1px solid #eeeeee;
-    border-radius: 20px;
-    margin-top: 149px;
     background: rgba(255, 255, 255, 0.7);
 }
 
@@ -353,4 +346,8 @@ footer {
 .buy-button:hover {
     color:azure;
     background-color: #004113;
+}
+
+.one_genre {
+    max-width: 350px;
 }
