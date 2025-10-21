@@ -32,8 +32,10 @@
             {% for genre in genres_list %}
             <div class="product-card">
                 <div class="product-info">
-                    <h3 class="product-title">{{ genre.name }}</h3>
-                    <img class="one_genre" src="/media/{{ genre.cover_image }}" >
+                    <a href="/genres/{{ genre.id }}">
+                        <h3 class="product-title">{{ genre.name }}</h3>
+                        <img class="one_genre" src="/media/{{ genre.cover_image }}" >
+                    </a>
                 </div>
             </div>
             {% endfor %}

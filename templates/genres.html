@@ -23,31 +23,20 @@
         <main class="main">
             <div class="zagolovok">
                 <h1>
-                    Филиалы
+                    Каталог
                 </h1>
             </div>
-            <div class="product-grid">
-                {% for branch in branch_list %}
-                <div class="product-card">
-                    <img src="{{ image1 }}">
-                    <div class="product-info">
-                        <h3 class="product-title">{{ branch.name }}</h3>
-                        <p class="product-price">{{ branch.address }}</p>
-                        <div class="rating-mini">
-                        {% with active_stars=branch.rate %}
-                            {% for i in "12345" %}
-                                {% if forloop.counter <= active_stars %}
-                                    <span class="active"></span>
-                                {% else %}
-                                    <span></span>
-                                {% endif %}
-                            {% endfor %}
-                        {% endwith %}
-                        </div>
-                    </div>
+            
+            {% for book in books_list %}
+            <div class="product-card">
+                <div class="product-info">
+                    <a href="/book/{{ book.id }}">
+                    <h3 class="product-title">{{ book.title }}</h3>
+                    <img class="one_genre" src="/media/{{ book.cover_image }}" >
+                    </a>
                 </div>
-                {% endfor %}
             </div>
+            {% endfor %}
         </main>
         <footer>
             <div class="footer">

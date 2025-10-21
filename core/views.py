@@ -4,19 +4,20 @@ import math
 from .models import *
 
 title = 'Читай САМ'
+context = {'title_template': title}
 
 
 # Create your views here.
 def main(request):
-    context = {'title_template': title}
     # получить товары из базы
     genres_list_db = Genre.objects.all()
     context.update( {'genres_list': genres_list_db} )
     return render(request, 'main.html', context)
 
-def catalog(request):
-    context = {'image1': 'https://srisovki.ru/wp-content/uploads/2025/05/ryzhij-milyj-kotik-768x959.webp', 'book1' : 'Все о котиках. Часть 1', 'image2': 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Zunge_raus.JPG/1200px-Zunge_raus.JPG', 'book2' : 'Все о котиках. Часть 1', 'image3': 'https://srisovki.ru/wp-content/uploads/2024/10/kotik-akula-768x987.webp', 'book3' : 'Все о котиках. Часть 1'}
-    return render(request, 'catalog.html', context)
+def genres(request, genres_id):
+    books_list_db = Book.objects.filter(genre_id=genres_id)
+    context = {'books_list': books_list_db}
+    return render(request, 'genres.html', context)
 
 def products(request):
     # получить товары из базы
@@ -24,18 +25,14 @@ def products(request):
     context = {'products_list': products_list_db}
     return render(request, 'products.html', context)
 
-def book_in_genre(request):
-    # получить все книги
-    books_list_db = Book.objects.all()
+def book(request, book_id):
+    books_list_db = Book.objects.filter(id=book_id)
     context = {'books_list': books_list_db}
-    return render(request, 'book_in_genre.html', context)
+    return render(request, 'book.html', context)
 
 
 def branch(request):
-    branch_list = [
-        {'name': 'Северный', 'address': 'г. Нижний Тагил, ул. Ленина, д. 5'},
-        {'name': 'Южный', 'address': 'г. Сысерть, ул. Малышева, д. 17'},
-        {'name': 'Западный', 'address': 'г. Краснофимск, ул. Мизерова, д. 17'}
-    ]
-    context = {'branch_list': branch_list}
+    # получить все книги
+    branch_list_db = Branchs.objects.all().order_by('name')
+    context.update({'branch_list': branch_list_db})
     return render(request, 'branch.html', context)

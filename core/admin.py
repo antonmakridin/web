@@ -7,6 +7,7 @@ from .models import *
 
 admin.site.register(Product)
 admin.site.register(Genre)
+admin.site.register(Branchs)
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):

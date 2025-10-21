@@ -4,9 +4,9 @@ from .views import *
 
 urlpatterns = [
     path('', main),
-    path('catalog/', catalog),
+    # path('catalog/', catalog),
     path('products/', products),
     path('branch/', branch),
-    path('book_in_genre/', book_in_genre),
-    # path('genres/', genres),
+    path('book/<int:book_id>', book),
+    path('genres/<int:genres_id>', genres),
 ]

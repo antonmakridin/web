@@ -69,3 +69,24 @@ class Book(models.Model):
         verbose_name_plural = 'книги'
     def __str__(self):
         return self.title
+    
+
+    
+class Branchs(models.Model):
+    name = models.CharField(max_length=250, verbose_name='Название')
+    address = models.CharField(max_length=250, verbose_name='Адрес')
+    text = models.CharField(
+        max_length=250, 
+        null=True,
+        blank=True,
+        verbose_name='какой-то текст'
+        )
+    rate = models.IntegerField(default=1, verbose_name='Рейтинг')
+
+    # чтобы отображались красивые названия в админке
+    class Meta:
+        verbose_name = 'Филиал'
+        verbose_name_plural = 'Филиалы'
+
+    def __str__(self):
+        return self.name
