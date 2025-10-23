@@ -1,5 +1,8 @@
 from django.db import models
+from mptt.models import MPTTModel, TreeForeignKey
+from ckeditor.fields import RichTextField
 from .utils.file_rename import BookFileRenamer
+from .utils.generate_url import URLGenerator
 
 # Create your models here.
 
@@ -26,6 +29,13 @@ class Genre(models.Model):
         blank=True,
         null=True
     )
+    url = models.CharField(
+        max_length=255, 
+        verbose_name='URL',
+        blank=True,
+        unique=True,
+        help_text='URL (генерируется автоматически)'
+    )
     
     class Meta:
         verbose_name = 'Жанр'
@@ -33,6 +43,15 @@ class Genre(models.Model):
     
     def __str__(self):
         return self.name
+    
+    def save(self, *args, **kwargs):
+        if not self.url:
+            # Генерируем базовый slug
+            base_slug = URLGenerator.generate_slug(self.name)
+            # Делаем его уникальным
+            self.url = URLGenerator.make_unique_slug(Genre, base_slug, self)
+                
+        super().save(*args, **kwargs)
 
 # таблица книг
 class Book(models.Model):
@@ -42,11 +61,17 @@ class Book(models.Model):
         Genre, 
         on_delete=models.SET_NULL,
         null=True,
-        blank=True,
+        blank=False,
         verbose_name='Жанр'
     )
     price = models.IntegerField(verbose_name='Цена')
-
+    url = models.CharField(
+        max_length=255, 
+        verbose_name='URL',
+        blank=True,
+        unique=True,
+        help_text='URL (генерируется автоматически)'
+    )
     # Поле для загрузки обложки
     cover_image = models.ImageField(
         upload_to=BookFileRenamer.rename_cover,
@@ -67,11 +92,27 @@ class Book(models.Model):
         app_label = 'core'
         verbose_name = 'книга'
         verbose_name_plural = 'книги'
+        
     def __str__(self):
         return self.title
     
+    def save(self, *args, **kwargs):
+        if not self.url:
+            # генерируем slug
+            base_slug = URLGenerator.generate_slug(self.title)
+            
+            if self.genre:
+                # Делаем slug уникальным для жанра
+                self.url = URLGenerator.make_unique_slug(
+                    Book, base_slug, self, genre=self.genre
+                )
+            else:
+                # Делаем slug уникальным
+                self.url = URLGenerator.make_unique_slug(Book, base_slug, self)
+                
+        super().save(*args, **kwargs)
 
-    
+# таблица филиалов
 class Branchs(models.Model):
     name = models.CharField(max_length=250, verbose_name='Название')
     address = models.CharField(max_length=250, verbose_name='Адрес')
@@ -90,3 +131,89 @@ class Branchs(models.Model):
 
     def __str__(self):
         return self.name
+    
+# таблица страниц
+class Page(MPTTModel):
+    title = models.CharField(max_length=255, verbose_name='Название страницы')
+    url = models.SlugField(
+        max_length=255, 
+        verbose_name='URL',
+        blank=True,
+        help_text='URL страницы (генерируется автоматически)'
+    )
+    content = RichTextField(verbose_name='Содержание', blank=True)
+    parent = TreeForeignKey(
+        'self',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        verbose_name='Родительская страница',
+        related_name='children'
+    )
+    order = models.IntegerField(default=0, verbose_name='Порядок')
+    is_active = models.BooleanField(default=True, verbose_name='Активна')
+    meta_title = models.CharField(max_length=255, verbose_name='Meta title', blank=True)
+    meta_description = models.TextField(verbose_name='Meta description', blank=True)
+    
+    # MPTT fields with defaults
+    level = models.PositiveIntegerField(default=0, editable=False)
+    lft = models.PositiveIntegerField(default=0, editable=False)
+    rght = models.PositiveIntegerField(default=0, editable=False)
+    tree_id = models.PositiveIntegerField(default=0, editable=False)
+    
+    class MPTTMeta:
+        order_insertion_by = ['order', 'title']
+    
+    class Meta:
+        verbose_name = 'Страница'
+        verbose_name_plural = 'Страницы'
+        unique_together = ['url', 'parent']
+    
+    def __str__(self):
+        return self.title
+    
+    def get_full_url(self):
+        # полный URL страницы с учетом вложенности
+        if self.parent:
+            return f"{self.parent.get_full_url()}/{self.url}"
+        return self.url
+    
+    def get_breadcrumbs(self):
+        # хлебные крошки для страницы
+        breadcrumbs = []
+        current = self
+        while current:
+            breadcrumbs.insert(0, {'title': current.title, 'url': current.get_full_url()})
+            current = current.parent
+        return breadcrumbs
+    
+    def save(self, *args, **kwargs):
+        if not self.url:
+            base_slug = URLGenerator.generate_slug(self.title)
+            
+            if self.parent:
+                self.url = URLGenerator.make_unique_slug(
+                    Page, base_slug, self, parent=self.parent
+                )
+            else:
+                self.url = URLGenerator.make_unique_slug(Page, base_slug, self)
+        
+        if not self._check_url_uniqueness():
+            base_slug = URLGenerator.generate_slug(self.title)
+            if self.parent:
+                self.url = URLGenerator.make_unique_slug(
+                    Page, base_slug, self, parent=self.parent
+                )
+            else:
+                self.url = URLGenerator.make_unique_slug(Page, base_slug, self)
+                
+        super().save(*args, **kwargs)
+    
+    def _check_url_uniqueness(self):
+        if not self.url:
+            return False
+            
+        existing = Page.objects.filter(url=self.url, parent=self.parent)
+        if self.pk:
+            existing = existing.exclude(pk=self.pk)
+        return not existing.exists()

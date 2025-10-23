@@ -29,14 +29,12 @@
     <main class="main">
         <div class="product-grid">
             
-            {% for book in books_list %}
             <div class="product-card">
                 <div class="product-info">
                     <h3 class="product-title">{{ book.title }}</h3>
                     <img class="one_genre" src="/media/{{ book.cover_image }}" >
                 </div>
             </div>
-            {% endfor %}
         </div>
     </main>
     <footer>

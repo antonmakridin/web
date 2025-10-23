@@ -30,7 +30,7 @@
             {% for book in books_list %}
             <div class="product-card">
                 <div class="product-info">
-                    <a href="/book/{{ book.id }}">
+                    <a href="/genres/{{ genre.url }}-{{ genre.id }}/book/{{ book.url }}-{{ book.id }}">
                     <h3 class="product-title">{{ book.title }}</h3>
                     <img class="one_genre" src="/media/{{ book.cover_image }}" >
                     </a>

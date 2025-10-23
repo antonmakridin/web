@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <title>{% block title %}{{ page.meta_title|default:page.title }} - {{ title_template }}{% endblock %}</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+{% block content %}
+    <header class="mainh">
+        <nav>
+            <ul class="menu">
+                <li class="menu-elem"><a href="/">Главная</a></li>
+                <li class="menu-elem"><a href="#">Меню</a>
+                    <ul class="fall-menu">
+                        <li class="fall-menu-elem"><a href="/products">Каталог</a></li>
+                    </ul>
+                </li>
+                <li class="menu-elem"><a href="/branch">Филиалы</a></li>
+            </ul>
+        </nav>
+        <div aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Главная</a></li>
+                {% for crumb in breadcrumbs %}
+                    {% if forloop.last %}
+                        <li class="breadcrumb-item active">{{ crumb.title }}</li>
+                    {% else %}
+                        <li class="breadcrumb-item"><a href="/{{ crumb.url }}">{{ crumb.title }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ol>
+        </div>
+    </header>
+    <main class="main">
+        <div class="product-grid">
+            <h1>{{ page.title }}</h1>
+            <div class="page-content">
+            {% autoescape off %}
+                {{ page.content }}
+            {% endautoescape %}
+            </div>
+        </div>
+        {% if children_pages %}
+        <div class="subsections mt-5">
+            <h2>Подразделы</h2>
+            <div class="row">
+                {% for subsection in children_pages %}
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"><a href="/{{ subsection.get_full_url }}">{{ subsection.title }}</a></h5>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </main>
+{% endblock %}
+    <footer>
+        <div class="footer">
+            Created by Makridin
+        </div>
+    </footer>
+</body>
+
+</html>

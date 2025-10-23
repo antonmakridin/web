@@ -3,3 +3,4 @@ venv/
 core/__pycache__
 web/__pycache__
 __pycache__
+migrations

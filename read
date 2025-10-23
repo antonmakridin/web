@@ -11,6 +11,8 @@ python manage.py runserver
 
 для работы с изображениями
 pip install Pillow
+pip install django-ckeditor
+pip install django-summernote
 
 
 миграции
