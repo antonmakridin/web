@@ -249,10 +249,6 @@ nav {
     width: 50px;
 }
 
-button:hover {
-    cursor: pointer;
-}
-
 #call {
     text-align: center;
     background-color:#ffd6d6;
@@ -269,6 +265,35 @@ input {
     border-radius: 6px;
     color: red;
     font-size: 22px;
+}
+
+
+select {
+    width: 60%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #a52a2a;
+    border-radius: 6px;
+    color: red;
+    font-size: 22px;
+}
+
+button {
+    width: 150px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #a52a2a;
+    border-radius: 6px;
+    color: red;
+    font-size: 22px;
+    transition: all 500ms ease;
+}
+
+button:hover {
+    color:#a52a2a;
+    cursor: pointer;
+    transition: all 500ms ease;
+    background-color: #ffd6d6;
 }
 
 .forma {
@@ -439,4 +464,15 @@ footer {
 
 .fall-menu-elem:hover {
     background-color: rgba(0, 100, 0, 0.1);
+}
+
+form {
+    width: 800px;
+}
+
+.form-block{
+    width:100%;    
+}
+.form-block .form-label {
+    width:25%;
 }

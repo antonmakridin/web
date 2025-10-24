@@ -1,40 +1,5 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="ru">
-
-<head>
-    <title>{% block title %}{{ page.meta_title|default:page.title }} - {{ title_template }}{% endblock %}</title>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-
-<body>
+{% extends 'base_tpl.html' %}
 {% block content %}
-    <header class="mainh">
-        <nav>
-            <ul class="menu">
-                <li class="menu-elem"><a href="/">Главная</a></li>
-                <li class="menu-elem"><a href="#">Меню</a>
-                    <ul class="fall-menu">
-                        <li class="fall-menu-elem"><a href="/products">Каталог</a></li>
-                    </ul>
-                </li>
-                <li class="menu-elem"><a href="/branch">Филиалы</a></li>
-            </ul>
-        </nav>
-        <div aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/">Главная</a></li>
-                {% for crumb in breadcrumbs %}
-                    {% if forloop.last %}
-                        <li class="breadcrumb-item active">{{ crumb.title }}</li>
-                    {% else %}
-                        <li class="breadcrumb-item"><a href="/{{ crumb.url }}">{{ crumb.title }}</a></li>
-                    {% endif %}
-                {% endfor %}
-            </ol>
-        </div>
-    </header>
     <main class="main">
         <div class="product-grid">
             <h1>{{ page.title }}</h1>
@@ -62,11 +27,3 @@
         {% endif %}
     </main>
 {% endblock %}
-    <footer>
-        <div class="footer">
-            Created by Makridin
-        </div>
-    </footer>
-</body>
-
-</html>

@@ -13,9 +13,12 @@ python manage.py runserver
 pip install Pillow
 pip install django-ckeditor
 pip install django-summernote
+pip install django-mptt
+pip install transliterate
 
 
 миграции
 python manage.py makemigrations core
 python manage.py migrate
 
+GUNICORN

@@ -1,0 +1,42 @@
+{% extends 'base_tpl.html' %}
+{% block content %}
+
+<h2>Добавление товара</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-block">
+        <div class="form-label">
+            <label for="name">Название книги</label>
+        </div>
+        <input type="text" name="title" placeholder="Введите название книги">
+    </div>
+    <div class="form-block">
+        <div class="form-label">
+            <label for="author">Автор книги</label>
+        </div>
+        <input type="text" name="author" placeholder="Введите автора книги">
+    </div>
+    <div class="form-block">
+        <div class="form-label">
+            <label for="price">Стоимость книги</label>
+        </div>
+        <input type="number" name="price" placeholder="Введите стоимость книги">
+    </div>
+    <div class="form-block">
+        <div class="form-label">
+            <label for="genre">Выберите жанр</label>
+        </div>
+        <select name="genre">
+            {% for genre in genres_list %}
+                <option value="{{ genre.id }}">{{ genre.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-block">
+        <button>Добавить</button>
+        {{ error }}
+    </div>
+</form>
+
+{% endblock %}

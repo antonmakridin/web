@@ -1,7 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404
 from django.urls import reverse
 from .models import *
+
 
 def get_base_context():
     return {
@@ -20,6 +21,12 @@ def main(request):
     return render(request, 'main.html', context)
 
 def genres(request, genre_url, genres_id):
+    genres_list_db = Genre.objects.all()
+    
+    context = get_base_context()
+    context.update({
+        'genres_list': genres_list_db,
+    })
     genre = get_object_or_404(Genre, id=genres_id)
     books_list_db = Book.objects.filter(genre_id=genres_id)
     
@@ -31,6 +38,12 @@ def genres(request, genre_url, genres_id):
     return render(request, 'genres.html', context)
 
 def products(request):
+    genres_list_db = Genre.objects.all()
+    
+    context = get_base_context()
+    context.update({
+        'genres_list': genres_list_db,
+    })
     products_list_db = Product.objects.all()
     
     context = get_base_context()
@@ -41,6 +54,12 @@ def products(request):
 
 
 def book(request, genre_url, genres_id, book_url, book_id):
+    genres_list_db = Genre.objects.all()
+    
+    context = get_base_context()
+    context.update({
+        'genres_list': genres_list_db,
+    })
     book_obj = get_object_or_404(Book, id=book_id, genre_id=genres_id)
     
     context = get_base_context()
@@ -52,6 +71,12 @@ def book(request, genre_url, genres_id, book_url, book_id):
 
 
 def branch(request):
+    genres_list_db = Genre.objects.all()
+    
+    context = get_base_context()
+    context.update({
+        'genres_list': genres_list_db,
+    })
     branch_list_db = Branchs.objects.all().order_by('name')
     
     context = get_base_context()
@@ -61,6 +86,12 @@ def branch(request):
     return render(request, 'branch.html', context)
 
 def dynamic_page(request, url):
+    genres_list_db = Genre.objects.all()
+    
+    context = get_base_context()
+    context.update({
+        'genres_list': genres_list_db,
+    })
     # обрабатываем динамические страницы
     try:
         # редирект на главную, если урл пустой
@@ -116,3 +147,64 @@ def dynamic_page(request, url):
     except Exception as e:
         print(f"Error loading page {url}: {str(e)}")
         raise Http404("Ошибка при загрузке страницы")
+    
+
+def custom_404_view(request, exception):
+    return render(request, '404.html', status=404)
+
+def page_not_found(request, exception):
+    return render(request, '404.html', status=404) 
+
+def add_product(request):
+    error = ''
+    print(request.POST)
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        author = request.POST.get('author')
+        price = request.POST.get('price')
+        genre = request.POST.get('genre')
+
+        if title and author and price and genre:
+            Book.objects.create(
+                title=title,
+                author=author,
+                price=price,
+                genre_id=genre,
+                url='sadsadsa'
+            )
+            return redirect('/')
+        else:
+            error = 'Заполните все поля'
+    genres_list_db = Genre.objects.all()
+    context = get_base_context()
+    context.update({
+        'genres_list': genres_list_db,
+        'error': error,
+    })
+    return render(request, 'add_product.html', context)
+
+
+def add_genre(request):
+    error = ''
+    print(request.POST)
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        image = request.POST.get('image')
+
+        if name:
+            Genre.objects.create(
+                name=name,
+                cover_image=image
+            )
+            return redirect('/')
+        else:
+            error = 'Заполните все поля'
+    genres_list_db = Genre.objects.all()
+    context = get_base_context()
+    context.update({
+        'genres_list': genres_list_db,
+        'error': error,
+    })
+    return render(request, 'add_genre.html', context)
+
+

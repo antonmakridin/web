@@ -1,61 +1,5 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="ru">
-
-<head>
-    <title>{{ title_template }}</title>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-
-<body>
-    <header class="mainh">
-        <nav>
-            <ul class="menu">
-                <li class="menu-elem"><a href="/">Главная</a></li>
-                
-                <!-- Страницы сайта -->
-                <li class="menu-elem"><a href="#">Страницы</a>
-                    <ul class="fall-menu">
-                        {% for page in root_pages %}
-                        <li class="fall-menu-elem">
-                            <a href="/{{ page.url }}">{{ page.title }}</a>
-                            {% if page.children.all %}
-                            <ul class="fall-menu fall-menu-nested">
-                                {% for child in page.children.all %}
-                                    {% if child.is_active %}
-                                    <li class="fall-menu-elem">
-                                        <a href="/{{ child.get_full_url }}">{{ child.title }}</a>
-                                    </li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
-                            {% endif %}
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </li>
-                
-                <!-- Каталог -->
-                <li class="menu-elem"><a href="#">Жанры</a>
-                    <ul class="fall-menu">
-                        {% for genre in genres_list %}
-                        <li class="fall-menu-elem">
-                            <a href="/genres/{{ genre.url }}-{{ genre.id }}">{{ genre.name }}</a>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </li>
-                <li class="menu-elem"><a href="/products">Товары</a></li>
-                <li class="menu-elem"><a href="/branch">Филиалы</a></li>
-            </ul>
-        </nav>
-        <section class="info">
-            <h1>{{ title_template }}</h1>
-            <p>сайт по продаже книг</p>
-        </section>
-    </header>
-    <main class="main">
+{% extends 'base_tpl.html' %}
+{% block content %}
         <div class="product-grid">
             
             {% for genre in genres_list %}
@@ -73,12 +17,4 @@
             </div>
             {% endfor %}
         </div>
-    </main>
-    <footer>
-        <div class="footer">
-            Created by Makridin
-        </div>
-    </footer>
-</body>
-
-</html>
+{% endblock %}
