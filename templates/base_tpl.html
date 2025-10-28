@@ -3,7 +3,7 @@
 <html lang="ru">
 
 <head>
-    <title>{{ title_template }}</title>
+    <title>{% block title %} {% endblock %}</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
@@ -55,6 +55,9 @@
                         </li>
                         <li class="fall-menu-elem">
                             <a href="/book/add">Добавить книгу</a>
+                        </li>
+                        <li class="fall-menu-elem">
+                            <a href="/branch/add">Добавить филиал</a>
                         </li>
                     </ul>
                 </li>

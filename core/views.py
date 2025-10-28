@@ -7,26 +7,16 @@ from .models import *
 def get_base_context():
     return {
         'title_template': 'Читай САМ',
-        'root_pages': Page.objects.filter(parent__isnull=True, is_active=True).order_by('order')
+        'root_pages': Page.objects.filter(parent__isnull=True, is_active=True).order_by('order'),
+        'genres_list': Genre.objects.all()
     }
 
 # Create your views here.
 def main(request):
-    genres_list_db = Genre.objects.all()
-    
     context = get_base_context()
-    context.update({
-        'genres_list': genres_list_db,
-    })
     return render(request, 'main.html', context)
 
 def genres(request, genre_url, genres_id):
-    genres_list_db = Genre.objects.all()
-    
-    context = get_base_context()
-    context.update({
-        'genres_list': genres_list_db,
-    })
     genre = get_object_or_404(Genre, id=genres_id)
     books_list_db = Book.objects.filter(genre_id=genres_id)
     
@@ -38,12 +28,6 @@ def genres(request, genre_url, genres_id):
     return render(request, 'genres.html', context)
 
 def products(request):
-    genres_list_db = Genre.objects.all()
-    
-    context = get_base_context()
-    context.update({
-        'genres_list': genres_list_db,
-    })
     products_list_db = Product.objects.all()
     
     context = get_base_context()
@@ -54,12 +38,6 @@ def products(request):
 
 
 def book(request, genre_url, genres_id, book_url, book_id):
-    genres_list_db = Genre.objects.all()
-    
-    context = get_base_context()
-    context.update({
-        'genres_list': genres_list_db,
-    })
     book_obj = get_object_or_404(Book, id=book_id, genre_id=genres_id)
     
     context = get_base_context()
@@ -71,12 +49,6 @@ def book(request, genre_url, genres_id, book_url, book_id):
 
 
 def branch(request):
-    genres_list_db = Genre.objects.all()
-    
-    context = get_base_context()
-    context.update({
-        'genres_list': genres_list_db,
-    })
     branch_list_db = Branchs.objects.all().order_by('name')
     
     context = get_base_context()
@@ -86,12 +58,6 @@ def branch(request):
     return render(request, 'branch.html', context)
 
 def dynamic_page(request, url):
-    genres_list_db = Genre.objects.all()
-    
-    context = get_base_context()
-    context.update({
-        'genres_list': genres_list_db,
-    })
     # обрабатываем динамические страницы
     try:
         # редирект на главную, если урл пустой
@@ -162,7 +128,8 @@ def add_product(request):
         title = request.POST.get('title')
         author = request.POST.get('author')
         price = request.POST.get('price')
-        genre = request.POST.get('genre')
+        genre = request.POST.get('genre')        
+        image = request.FILES.get('image')
 
         if title and author and price and genre:
             Book.objects.create(
@@ -170,7 +137,7 @@ def add_product(request):
                 author=author,
                 price=price,
                 genre_id=genre,
-                url='sadsadsa'
+                cover_image=image
             )
             return redirect('/')
         else:
@@ -189,8 +156,9 @@ def add_genre(request):
     print(request.POST)
     if request.method == 'POST':
         name = request.POST.get('name')
-        image = request.POST.get('image')
-
+        image = request.FILES.get('image')
+        
+        # Создаем экземпляр модели и сохраняем данные
         if name:
             Genre.objects.create(
                 name=name,
@@ -206,5 +174,38 @@ def add_genre(request):
         'error': error,
     })
     return render(request, 'add_genre.html', context)
+
+
+def add_branch(request):
+    error = ''
+    print(request.POST)
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        address = request.POST.get('address')
+        text = request.POST.get('text')
+        rate = request.POST.get('rate')
+        
+        # Создаем экземпляр модели и сохраняем данные
+        if name and address and text and rate:
+            Branchs.objects.create(
+                name=name,
+                address=address,
+                text=text,
+                rate=rate
+            )
+            return redirect('/')
+        else:
+            error = 'Заполните все поля'
+
+    branch_list_db = Branchs.objects.all()
+    
+    context = get_base_context()
+    context.update({
+        'branch_list': branch_list_db,
+        'error': error,
+    })
+
+
+    return render(request, 'add_branch.html', context)
 
 

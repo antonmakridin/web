@@ -3,7 +3,8 @@
 
 <h2>Добавление товара</h2>
 
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
+
     {% csrf_token %}
     <div class="form-block">
         <div class="form-label">
@@ -32,6 +33,12 @@
                 <option value="{{ genre.id }}">{{ genre.name }}</option>
             {% endfor %}
         </select>
+    </div>
+    <div class="form-block">
+        <div class="form-label">
+            <label for="name">картинка</label>
+        </div>
+        <input type="file" name="image">
     </div>
     <div class="form-block">
         <button>Добавить</button>

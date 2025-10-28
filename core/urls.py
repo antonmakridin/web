@@ -10,6 +10,7 @@ urlpatterns = [
     path('branch/', branch),
     path('book/add', add_product),
     path('genre/add', add_genre),
+    path('branch/add', add_branch),
     path('genres/<slug:genre_url>-<int:genres_id>/', genres, name='genre_detail'),
     path('genres/<slug:genre_url>-<int:genres_id>/book/<slug:book_url>-<int:book_id>/', book, name='book_detail'),
 # динамические урлы

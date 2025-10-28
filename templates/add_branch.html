@@ -1,0 +1,38 @@
+{% extends 'base_tpl.html' %}
+{% block content %}
+
+<h2>Добавление филиала</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-block">
+        <div class="form-label">
+            <label for="name">Название филиала</label>
+        </div>
+        <input type="text" name="name" placeholder="Введите название филиала">
+    </div>
+    <div class="form-block">
+        <div class="form-label">
+            <label for="address">Адрес филиала</label>
+        </div>
+        <input type="text" name="address" placeholder="Введите адрес филиала">
+    </div>
+    <div class="form-block">
+        <div class="form-label">
+            <label for="text">Описание филиала</label>
+        </div>
+        <textarea name="text" placeholder="Введите описание филиала"></textarea>
+    </div>
+    <div class="form-block">
+        <div class="form-label">
+            <label for="rate">Рейтинг филиала</label>
+        </div>
+        <input type="number" max="5" min="1" name="rate" placeholder="Введите рейтинг филиала">
+    </div>
+    <div class="form-block">
+        <button>Добавить</button>
+        {{ error }}
+    </div>
+</form>
+
+{% endblock %}
