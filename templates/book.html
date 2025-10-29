@@ -1,32 +1,5 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="ru">
-
-<head>
-    <title>{{title_template}}</title>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-
-<body>
-    <header class="mainh">
-        <nav>
-            <ul class="menu">
-                <li class="menu-elem"><a href="/">Главная</a></li>
-                <li class="menu-elem"><a href="#">Меню</a>
-                    <ul class="fall-menu">
-                        <li class="fall-menu-elem"><a href="/products">Каталог</a></li>
-                    </ul>
-                </li>
-                <li class="menu-elem"><a href="/branch">Филиалы</a></li>
-            </ul>
-        </nav>
-        <section class="info">
-            <h1>{{title_template}}</h1>
-            <p>сайт по продаже книг</p>
-        </section>
-    </header>
-    <main class="main">
+{% extends 'base_tpl.html' %}
+{% block content %}
         <div class="product-grid">
             
             <div class="product-card">
@@ -36,12 +9,4 @@
                 </div>
             </div>
         </div>
-    </main>
-    <footer>
-        <div class="footer">
-            Created by Makridin
-        </div>
-    </footer>
-</body>
-
-</html>
+{% endblock %}

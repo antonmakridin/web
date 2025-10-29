@@ -1,22 +1,19 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404
 from django.urls import reverse
 from .models import *
 
+
 def get_base_context():
     return {
         'title_template': 'Читай САМ',
-        'root_pages': Page.objects.filter(parent__isnull=True, is_active=True).order_by('order')
+        'root_pages': Page.objects.filter(parent__isnull=True, is_active=True).order_by('order'),
+        'genres_list': Genre.objects.all()
     }
 
 # Create your views here.
 def main(request):
-    genres_list_db = Genre.objects.all()
-    
     context = get_base_context()
-    context.update({
-        'genres_list': genres_list_db,
-    })
     return render(request, 'main.html', context)
 
 def genres(request, genre_url, genres_id):
@@ -116,3 +113,99 @@ def dynamic_page(request, url):
     except Exception as e:
         print(f"Error loading page {url}: {str(e)}")
         raise Http404("Ошибка при загрузке страницы")
+    
+
+def custom_404_view(request, exception):
+    return render(request, '404.html', status=404)
+
+def page_not_found(request, exception):
+    return render(request, '404.html', status=404) 
+
+def add_product(request):
+    error = ''
+    print(request.POST)
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        author = request.POST.get('author')
+        price = request.POST.get('price')
+        genre = request.POST.get('genre')        
+        image = request.FILES.get('image')
+
+        if title and author and price and genre:
+            Book.objects.create(
+                title=title,
+                author=author,
+                price=price,
+                genre_id=genre,
+                cover_image=image
+            )
+            return redirect('/')
+        else:
+            error = 'Заполните все поля'
+    genres_list_db = Genre.objects.all()
+    context = get_base_context()
+    context.update({
+        'genres_list': genres_list_db,
+        'error': error,
+    })
+    return render(request, 'add_product.html', context)
+
+
+def add_genre(request):
+    error = ''
+    print(request.POST)
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        image = request.FILES.get('image')
+        
+        # Создаем экземпляр модели и сохраняем данные
+        if name:
+            Genre.objects.create(
+                name=name,
+                cover_image=image
+            )
+            return redirect('/')
+        else:
+            error = 'Заполните все поля'
+    genres_list_db = Genre.objects.all()
+    context = get_base_context()
+    context.update({
+        'genres_list': genres_list_db,
+        'error': error,
+    })
+    return render(request, 'add_genre.html', context)
+
+
+def add_branch(request):
+    error = ''
+    print(request.POST)
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        address = request.POST.get('address')
+        text = request.POST.get('text')
+        rate = request.POST.get('rate')
+        
+        # Создаем экземпляр модели и сохраняем данные
+        if name and address and text and rate:
+            Branchs.objects.create(
+                name=name,
+                address=address,
+                text=text,
+                rate=rate
+            )
+            return redirect('/')
+        else:
+            error = 'Заполните все поля'
+
+    branch_list_db = Branchs.objects.all()
+    
+    context = get_base_context()
+    context.update({
+        'branch_list': branch_list_db,
+        'error': error,
+    })
+
+
+    return render(request, 'add_branch.html', context)
+
+
