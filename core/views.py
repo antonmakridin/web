@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404
 from django.urls import reverse
+
 from .models import *
+from .forms import FeedbackForm
 
 
 def get_base_context():
@@ -209,3 +211,41 @@ def add_branch(request):
     return render(request, 'add_branch.html', context)
 
 
+def add_feedback_old(request):
+    error = ''
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        text = request.POST.get('text')
+        phone = request.POST.get('phone')
+        
+        
+        # Создаем экземпляр модели и сохраняем данные
+        if name and text and phone:
+            Feedback.objects.create(
+                name=name,
+                text=text,
+                phone = phone
+            )
+            return redirect('/')
+        else:
+            error = 'Заполните все поля'
+    genres_list_db = Genre.objects.all()
+    context = get_base_context()
+    context.update({
+        'genres_list': genres_list_db,
+        'error': error,
+    })
+    return render(request, 'add_feedback.html', context)
+
+
+def add_feedback(request):
+    if request.POST:
+        feedback_form = FeedbackForm(request.POST)
+        if feedback_form.is_valid():
+                feedback_Obj = feedback_form.save(commit=False)
+                feedback_Obj.save()
+                return redirect('myprofile')
+    else:
+        feedback_form = FeedbackForm()
+        context = {'feedback_form': feedback_form}
+        return render(request, 'add_feedback.html', context)

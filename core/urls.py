@@ -7,6 +7,7 @@ urlpatterns = [
     path('', main),
     # path('catalog/', catalog),
     path('products/', products),
+    path('feedback/', add_feedback),
     path('branch/', branch),
     path('book/add', add_product),
     path('genre/add', add_genre),

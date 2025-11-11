@@ -217,3 +217,17 @@ class Page(MPTTModel):
         if self.pk:
             existing = existing.exclude(pk=self.pk)
         return not existing.exists()
+
+
+class Feedback(models.Model):
+    name = models.CharField(max_length=200, verbose_name='Имя')
+    text = models.CharField(verbose_name='Отзыв')
+    phone = models.CharField(verbose_name='Телефон')
+
+    # чтобы отображались красивые названия в админке
+    class Meta:
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
+
+    def __str__(self):
+        return self.name

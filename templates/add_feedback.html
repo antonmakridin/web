@@ -1,0 +1,16 @@
+{% extends 'base_tpl.html' %}
+{% block content %}
+
+<h2>Добавить отзыв</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    <div class="form-block">
+        {{ feedback_form }}
+    </div>
+    <div class="form-block">
+        <button>Добавить</button>
+    </div>
+</form>
+
+{% endblock %}
