@@ -97,6 +97,8 @@ class Book(models.Model):
         return self.title
     
     def save(self, *args, **kwargs):
+        print(kwargs)
+        print(args)
         if not self.url:
             # генерируем slug
             base_slug = URLGenerator.generate_slug(self.title)
@@ -111,6 +113,15 @@ class Book(models.Model):
                 self.url = URLGenerator.make_unique_slug(Book, base_slug, self)
                 
         super().save(*args, **kwargs)
+        
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('book_detail', kwargs={
+            'genre_url': self.genre.url,
+            'genres_id': self.genre.id,
+            'book_url': self.url,
+            'book_id': self.id
+        })
 
 # таблица филиалов
 class Branchs(models.Model):

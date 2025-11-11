@@ -3,7 +3,7 @@ from django.http import HttpResponse, Http404
 from django.urls import reverse
 
 from .models import *
-from .forms import FeedbackForm
+from .forms import *
 
 
 def get_base_context():
@@ -123,7 +123,7 @@ def custom_404_view(request, exception):
 def page_not_found(request, exception):
     return render(request, '404.html', status=404) 
 
-def add_product(request):
+def add_product_old(request):
     error = ''
     print(request.POST)
     if request.method == 'POST':
@@ -239,13 +239,34 @@ def add_feedback_old(request):
 
 
 def add_feedback(request):
-    if request.POST:
-        feedback_form = FeedbackForm(request.POST)
-        if feedback_form.is_valid():
-                feedback_Obj = feedback_form.save(commit=False)
-                feedback_Obj.save()
-                return redirect('myprofile')
-    else:
-        feedback_form = FeedbackForm()
-        context = {'feedback_form': feedback_form}
-        return render(request, 'add_feedback.html', context)
+    feedback_form = FeedbackForm(request.POST)
+    if feedback_form.is_valid():
+        name = request.POST.get('name')
+        text = request.POST.get('text')
+        phone = request.POST.get('phone')
+        Feedback.objects.create(
+            name=name,
+            text=text,
+            phone = phone
+        )
+        return redirect('/feedback/')
+    
+    context = {'feedback_form': feedback_form}
+    return render(request, 'add_feedback.html', context)
+
+
+def add_product(request):
+    form = AddBook()
+    if request.method == 'POST':
+        form = AddBook(request.POST, request.FILES)
+        if form.is_valid():
+            data = form.cleaned_data
+            book = Book.objects.create(**data)
+            
+            return redirect(book.get_absolute_url())
+
+    context = get_base_context()
+    context.update = {
+        'form': form
+    }
+    return render(request, 'add_product.html', context)
