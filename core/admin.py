@@ -40,6 +40,7 @@ class PageAdmin(DraggableMPTTAdmin):
 
 admin.site.register(Product)
 admin.site.register(Branchs)
+admin.site.register(Feedback)
 
 @admin.register(Genre)
 class GenreAdmin(admin.ModelAdmin):

@@ -1,15 +1,15 @@
 {% extends 'base_tpl.html' %}
 {% block content %}
 
-<h2>Добавление товара</h2>
+<h2>Добавить отзыв</h2>
 
-<form method="POST" enctype="multipart/form-data">
-
+<form method="POST">
     {% csrf_token %}
-    {{ form }}
+    <div class="form-block">
+        {{ feedback_form }}
+    </div>
     <div class="form-block">
         <button>Добавить</button>
-        
     </div>
 </form>
 

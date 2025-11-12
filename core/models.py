@@ -97,6 +97,8 @@ class Book(models.Model):
         return self.title
     
     def save(self, *args, **kwargs):
+        print(kwargs)
+        print(args)
         if not self.url:
             # генерируем slug
             base_slug = URLGenerator.generate_slug(self.title)
@@ -111,6 +113,15 @@ class Book(models.Model):
                 self.url = URLGenerator.make_unique_slug(Book, base_slug, self)
                 
         super().save(*args, **kwargs)
+        
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('book_detail', kwargs={
+            'genre_url': self.genre.url,
+            'genres_id': self.genre.id,
+            'book_url': self.url,
+            'book_id': self.id
+        })
 
 # таблица филиалов
 class Branchs(models.Model):
@@ -217,3 +228,17 @@ class Page(MPTTModel):
         if self.pk:
             existing = existing.exclude(pk=self.pk)
         return not existing.exists()
+
+
+class Feedback(models.Model):
+    name = models.CharField(max_length=200, verbose_name='Имя')
+    text = models.CharField(verbose_name='Отзыв')
+    phone = models.CharField(verbose_name='Телефон')
+
+    # чтобы отображались красивые названия в админке
+    class Meta:
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
+
+    def __str__(self):
+        return self.name
