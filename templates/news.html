@@ -1,0 +1,57 @@
+{% extends 'base_tpl.html' %}
+{% block content %}
+<h2>Новости</h2>
+        <div class="product-grid">
+            {% for news in news_list %}
+            <div class="product-card">
+                <div class="product-info">
+                    <a href="{% url 'edit_news' news.url %}" class="btn btn-outline-primary">
+                        Редактировать новость
+                    </a>
+                    <a href="{% url 'delete_news' news.url %}" class="btn btn-danger">
+                        Удалить новость
+                    </a>
+                    <p>{{ news.created_at|date:"d.m.Y" }}</p>
+                    <a href="/news/{{ news.url }}">
+                    <h3 class="product-title">{{ news.name }}</h3>
+                    
+                    <img class="one_genre" src="/media/{{ news.cover_image }}" >
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="pagination">
+            <span class="step-links">
+                {% if news_list.has_previous %}
+                    <a href="?page=1">&laquo; первая</a>
+                    
+                    {# Быстрый переход на 2 страницы назад #}
+                    {% if news_list.number > 2 %}
+                        <a href="?page={{ news_list.number|add:'-2' }}">{{ news_list.number|add:'-2' }}</a>
+                    {% endif %}
+                    
+                    <a href="?page={{ news_list.previous_page_number }}">{{ news_list.previous_page_number }}</a>
+                {% endif %}
+
+                <span class="current">
+                    {{ news_list.number }}
+                </span>
+
+                {% if news_list.has_next %}
+                    <a href="?page={{ news_list.next_page_number }}">{{ news_list.next_page_number }}</a>
+                    
+                    {# Быстрый переход на 2 страницы вперед #}
+                    {% if news_list.number < news_list.paginator.num_pages|add:'-1' %}
+                        <a href="?page={{ news_list.number|add:'2' }}">{{ news_list.number|add:'2' }}</a>
+                    {% endif %}
+                    
+                    <a href="?page={{ news_list.paginator.num_pages }}">последняя &raquo;</a>
+                {% endif %}
+                
+                <span class="page-info">
+                    из {{ news_list.paginator.num_pages }}
+                </span>
+            </span>
+        </div>
+{% endblock %}}

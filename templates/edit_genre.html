@@ -1,0 +1,20 @@
+{% extends 'base_tpl.html' %}
+{% block content %}
+
+<h2>Добавление жанра</h2>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-block">
+        <div class="form-label">
+            <label for="name">Редактирование жанра</label>
+        </div>
+        {{ form }}
+    </div>
+    <div class="form-block">
+        <button>Добавить</button>
+        {{ error }}
+    </div>
+</form>
+
+{% endblock %}

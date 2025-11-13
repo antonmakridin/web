@@ -53,6 +53,57 @@ class Genre(models.Model):
                 
         super().save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('genre_detail', kwargs={
+            'genre_url': self.url,
+            'genres_id': self.id
+        })
+
+
+# таблица новостей
+class News(models.Model):
+    name = models.CharField(max_length=1500, verbose_name='Название новости')
+    desc = models.CharField(max_length=5000, verbose_name='Описание новости')
+    text = RichTextField(verbose_name='Содержание', blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+    # Изображение жанра
+    cover_image = models.ImageField(
+        upload_to=BookFileRenamer.rename_cover,
+        verbose_name='Обложка новости',
+        blank=True,
+        null=True
+    )
+    url = models.CharField(
+        max_length=255, 
+        verbose_name='URL',
+        blank=True,
+        unique=True,
+        help_text='URL (генерируется автоматически)'
+    )
+    
+    class Meta:
+        verbose_name = 'Новость'
+        verbose_name_plural = 'Новости'
+    
+    def __str__(self):
+        return self.name
+    
+    def save(self, *args, **kwargs):
+        if not self.url:
+            # Генерируем базовый slug
+            base_slug = URLGenerator.generate_slug(self.name)
+            # Делаем его уникальным
+            self.url = URLGenerator.make_unique_slug(News, base_slug, self)
+                
+        super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('show_news', kwargs={
+            'news_url': self.url
+        })
+
 # таблица книг
 class Book(models.Model):
     title = models.CharField(max_length=255, verbose_name='Название')

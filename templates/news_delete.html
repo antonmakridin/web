@@ -1,0 +1,20 @@
+{% extends 'base_tpl.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Удаление новости</h1>
+    
+    <div class="confirmation-message">
+        <p>Вы уверены, что хотите удалить новость "<strong>{{ news.name }}</strong>"?</p>
+        <p>Это действие нельзя отменить.</p>
+    </div>
+    
+    <form method="post" class="delete-form">
+        {% csrf_token %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-danger">Да, удалить</button>
+            <a href="{% url 'edit_news' news.url %}" class="btn btn-secondary">Отмена</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

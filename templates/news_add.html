@@ -1,0 +1,29 @@
+{% extends 'base_tpl.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>{% if is_edit %}Редактирование новости{% else %}Добавление новости{% endif %}</h1>
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        {% for field in form %}
+            <div class="form-field">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <div class="error">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        
+        <button type="submit" class="btn btn-primary">
+            {% if is_edit %}Сохранить изменения{% else %}Добавить новость{% endif %}
+        </button>
+        
+        {% if is_edit %}
+            <a href="{{ news.get_absolute_url }}" class="btn btn-secondary">Отмена</a>
+        {% endif %}
+    </form>
+</div>
+{% endblock %}

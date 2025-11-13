@@ -21,4 +21,28 @@
     </div>
 </form>
 
+<hr />
+
+<h3>Список жанров</h3>
+    {% if genres_list %}
+        <div class="row">
+            {% for genre in genres_list %}
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ genre.name }}</h5>
+                            <div class="btn-group">
+                                <a href="{{ genre.get_absolute_url }}" class="btn btn-sm btn-info">Просмотр</a>
+                                <a href="{% url 'edit_genre' genre.id %}" class="btn btn-sm btn-warning">Редактировать</a>
+                                <a href="{% url 'delete_genre' genre.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Удалить без подтверждения?')">Удалить</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Жанры не добавлены</p>
+    {% endif %}
+
 {% endblock %}

@@ -25,7 +25,7 @@
                                 {% for child in page.children.all %}
                                     {% if child.is_active %}
                                     <li class="fall-menu-elem">
-                                        <a href="/{{ child.get_full_url }}">{{ child.title }}</a>
+                                        <a href="/{{ child.get_full_url }}/">{{ child.title }}</a>
                                     </li>
                                     {% endif %}
                                 {% endfor %}
@@ -41,23 +41,33 @@
                     <ul class="fall-menu">
                         {% for genre in genres_list %}
                         <li class="fall-menu-elem">
-                            <a href="/genres/{{ genre.url }}-{{ genre.id }}">{{ genre.name }}</a>
+                            <a href="/genres/{{ genre.url }}-{{ genre.id }}/">{{ genre.name }}</a>
                         </li>
                         {% endfor %}
                     </ul>
                 </li>
-                <li class="menu-elem"><a href="/products">Товары</a></li>
-                <li class="menu-elem"><a href="/branch">Филиалы</a></li>
+                <li class="menu-elem"><a href="/products/">Товары</a></li>
+                <li class="menu-elem"><a href="/branch/">Филиалы</a></li>
+                <li class="menu-elem"><a href="#">Новости</a>
+                    <ul class="fall-menu">
+                        <li class="fall-menu-elem">
+                            <a href="/news/">Список</a>
+                        </li>
+                        <li class="fall-menu-elem">
+                            <a href="/news/add">Добавить новость</a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="menu-elem"><a href="#">Добавить</a>
                     <ul class="fall-menu">
                         <li class="fall-menu-elem">
-                            <a href="/genre/add">Добавить жанр</a>
+                            <a href="/genre/add/">Добавить жанр</a>
                         </li>
                         <li class="fall-menu-elem">
-                            <a href="/book/add">Добавить книгу</a>
+                            <a href="/book/add/">Добавить книгу</a>
                         </li>
                         <li class="fall-menu-elem">
-                            <a href="/branch/add">Добавить филиал</a>
+                            <a href="/branch/add/">Добавить филиал</a>
                         </li>
                     </ul>
                 </li>

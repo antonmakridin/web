@@ -52,3 +52,9 @@ class BookAdmin(admin.ModelAdmin):
     list_display = ['title', 'author', 'genre', 'price', 'url']
     list_filter = ['genre', 'author']
     prepopulated_fields = {'url': ('title',)}
+    
+@admin.register(News)
+class NewsAdmin(admin.ModelAdmin):
+    list_display = ['name', 'desc', 'created_at']
+    list_filter = ['name', 'created_at']
+    prepopulated_fields = {'url': ('name',)}

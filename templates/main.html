@@ -1,8 +1,23 @@
 {% extends 'base_tpl.html' %}
 {% block title %} Магазин лучших книг {% endblock %}
 {% block content %}
+<h2>Новости <a href="/news/">перейти в раздел</a></h2>
         <div class="product-grid">
-            
+            {% for news in news_list %}
+            <div class="product-card">
+                <div class="product-info">
+                    <p>{{ news.created_at|date:"d.m.Y" }}</p>
+                    <a href="/news/{{ news.url }}">
+                    <h3 class="product-title">{{ news.name }}</h3>
+                    <img class="one_genre" src="/media/{{ news.cover_image }}" >
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+<hr />
+<h2>Жанры</h2>
+        <div class="product-grid">
             {% for genre in genres_list %}
             <div class="product-card">
                 <div class="product-info">

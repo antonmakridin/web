@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, Http404
 from django.urls import reverse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import *
 from .forms import *
@@ -15,8 +16,14 @@ def get_base_context():
 
 # Create your views here.
 def main(request):
+    news_list_db = News.objects.all().order_by('-created_at')[:3]
+    
     context = get_base_context()
+    context.update({
+        'news_list': news_list_db,
+    })
     return render(request, 'main.html', context)
+
 
 def genres(request, genre_url, genres_id):
     genre = get_object_or_404(Genre, id=genres_id)
@@ -152,7 +159,7 @@ def add_product_old(request):
     })
     return render(request, 'add_product.html', context)
 
-
+# добавление жанра
 def add_genre(request):
     error = ''
     print(request.POST)
@@ -162,11 +169,11 @@ def add_genre(request):
         
         # Создаем экземпляр модели и сохраняем данные
         if name:
-            Genre.objects.create(
+            genre = Genre.objects.create(
                 name=name,
                 cover_image=image
             )
-            return redirect('/')
+            return redirect(genre.get_absolute_url())
         else:
             error = 'Заполните все поля'
     genres_list_db = Genre.objects.all()
@@ -178,9 +185,51 @@ def add_genre(request):
     return render(request, 'add_genre.html', context)
 
 
+# удаление жанра
+def delete_genre(request, genre_id):
+    try:
+        genre = Genre.objects.get(id=genre_id)
+        genre.delete()
+        # редирект на страниу после удаления
+        return redirect('/genre/add')  # или на другую страницу
+    except Genre.DoesNotExist:
+        # редирект если жанр не найден
+        return redirect('/genre/add')
+
+# редактирование жанра
+def edit_genre(request,genre_id):
+    try:
+        genre = Genre.objects.get(id=genre_id)
+        
+        if request.method == 'POST':
+            form = GenreForm(request.POST, request.FILES, instance=genre)
+            if form.is_valid():
+                genre = form.save(commit=False)
+                if form.cleaned_data['clear_image']:
+                    genre.cover_image.delete(save=False)
+                    genre.cover_image = None
+                genre.save()
+                return redirect('/genre/add')
+        else:
+            form = GenreForm(instance=genre)
+        
+        context = get_base_context()
+        context.update({
+            'form': form,
+            'genre': genre,
+        })
+        return render(request, 'edit_genre.html', context)
+        
+    except Genre.DoesNotExist:
+        return redirect('/')
+        
+    except Genre.DoesNotExist:
+        return redirect('/')
+
+
+# добавление филиала
 def add_branch(request):
     error = ''
-    print(request.POST)
     if request.method == 'POST':
         name = request.POST.get('name')
         address = request.POST.get('address')
@@ -270,3 +319,91 @@ def add_product(request):
         'form': form
     }
     return render(request, 'add_product.html', context)
+
+
+
+# НОВОСТИ
+def add_news(request):
+    form = AddNews()
+    if request.method == 'POST':
+        form = AddNews(request.POST, request.FILES)
+        if form.is_valid():
+            data = form.cleaned_data
+            news = News.objects.create(**data)
+            
+            return redirect(news.get_absolute_url())
+
+    context = get_base_context()
+    context = {
+        'page_title': f'Добавление новости',
+        'form': form
+    }
+    return render(request, 'news_add.html', context)
+
+
+def edit_news(request, news_url):
+    news_obj = get_object_or_404(News, url=news_url)
+    
+    if request.method == 'POST':
+        form = EditNews(request.POST, request.FILES, instance=news_obj)
+        if form.is_valid():
+            news = form.save()
+            return redirect(news.get_absolute_url())
+    else:
+        form = EditNews(instance=news_obj)
+    
+    context = get_base_context()
+    context.update({
+        'form': form,
+        'news': news_obj,
+        'page_title': f'Редактирование новости: {news_obj.name}',
+        'submit_text': 'Сохранить изменения',
+        'is_edit': True
+    })
+    return render(request, 'news_edit.html', context)
+
+
+def delete_news(request, news_url):
+    news_obj = get_object_or_404(News, url=news_url)
+    
+    if request.method == 'POST':
+        news_obj.delete()
+        return redirect('list_news')
+    
+    context = get_base_context()
+    context.update({
+        'news': news_obj
+    })
+    return render(request, 'news_delete.html', context)
+
+
+def list_news(request):
+    news_list_db = News.objects.all().order_by('-created_at')
+    
+    news_on_page = 5
+    paginator = Paginator(news_list_db, news_on_page)
+    page = request.GET.get('page')
+    
+    try:
+        news_list = paginator.page(page)
+    except PageNotAnInteger:
+        news_list = paginator.page(1)
+    except EmptyPage:
+        news_list = paginator.page(paginator.num_pages)
+
+    context = get_base_context()
+    context.update({
+        'news_list': news_list,
+    })
+    return render(request, 'news.html', context)
+
+
+def show_news(request, news_url):
+    news_obj = get_object_or_404(News, url=news_url)
+    
+    context = get_base_context()
+    context.update({
+        'news': news_obj,
+    })
+    return render(request, 'news_show.html', context)
+
