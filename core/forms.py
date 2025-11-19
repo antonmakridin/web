@@ -127,12 +127,6 @@ class EditNews(forms.Form):
         if self.instance and self.instance.cover_image:
             self.fields['cover_image'].help_text = f'Текущее изображение: {self.instance.cover_image.name}'
 
-    def clean_name(self):
-        name = self.cleaned_data['name']
-        if name.lower() in ['перец']:
-            raise forms.ValidationError('Этот товар запрещен')
-        return name
-
     def save(self):
         if not self.instance:
             raise ValueError("Instance is required for EditNewsForm")
@@ -145,3 +139,56 @@ class EditNews(forms.Form):
         self.instance.save()
         
         return self.instance
+    
+class EditBook(forms.Form):
+    
+    title = forms.CharField(
+        widget=forms.TextInput(attrs={'placeholder': 'Введите название книги'}),
+        label='Название книги'
+        )
+    author = forms.CharField(
+        widget=forms.TextInput(attrs={'placeholder': 'Введите автора книги'}),
+        label='Автор книги'
+        )
+    price = forms.IntegerField(min_value=0, max_value=10000, label='Стоимость книги')
+    genre = forms.ModelChoiceField(label='Выберите жанр', queryset=Genre.objects.all())
+    
+    cover_image = forms.ImageField(
+        label='Картинка',
+        required=False
+    )
+
+    def clean_name(self):
+        name = self.cleaned_data['name']
+        if name.lower() in ['перец']:
+            raise forms.ValidationError('Этот товар запрещен')
+        return name
+    def __init__(self, *args, **kwargs):
+        self.instance = kwargs.pop('instance', None)
+        initial = kwargs.get('initial', {})
+        if self.instance:
+            initial.update({
+                'title': self.instance.title,
+                'author': self.instance.author,
+                'price': self.instance.price,
+                'genre': self.instance.genre,
+            })
+            kwargs['initial'] = initial
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.cover_image:
+            self.fields['cover_image'].help_text = f'Текущее изображение: {self.instance.cover_image.name}'
+
+    def save(self):
+        if not self.instance:
+            raise ValueError("Instance is required for EditBookForm")
+        self.instance.name = self.cleaned_data['title']
+        self.instance.desc = self.cleaned_data['author']
+        self.instance.price = self.cleaned_data['price']
+        self.instance.genre = self.cleaned_data['genre']
+        if self.cleaned_data['cover_image']:
+            self.instance.cover_image = self.cleaned_data['cover_image']
+        self.instance.save()
+        
+        return self.instance
+
+    

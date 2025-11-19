@@ -286,7 +286,7 @@ def add_feedback_old(request):
     })
     return render(request, 'add_feedback.html', context)
 
-
+# добавление отзыва
 def add_feedback(request):
     feedback_form = FeedbackForm(request.POST)
     if feedback_form.is_valid():
@@ -303,7 +303,7 @@ def add_feedback(request):
     context = {'feedback_form': feedback_form}
     return render(request, 'add_feedback.html', context)
 
-
+# добавление книги
 def add_product(request):
     form = AddBook()
     if request.method == 'POST':
@@ -320,7 +320,28 @@ def add_product(request):
     }
     return render(request, 'add_product.html', context)
 
+# редактирование книги
 
+def edit_book(request, book_url):
+    book_obj = get_object_or_404(Book, url=book_url)
+    
+    if request.method == 'POST':
+        form = EditBook(request.POST, request.FILES, instance=book_obj)
+        if form.is_valid():
+            book = form.save()
+            return redirect(book.get_absolute_url())
+    else:
+        form = EditBook(instance=book_obj)
+    
+    context = get_base_context()
+    context.update({
+        'form': form,
+        'book': book_obj,
+        'page_title': f'Редактирование книги: {book_obj.title}',
+        'submit_text': 'Сохранить изменения',
+        'is_edit': True
+    })
+    return render(request, 'book_edit.html', context)
 
 # НОВОСТИ
 def add_news(request):

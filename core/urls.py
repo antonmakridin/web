@@ -6,10 +6,11 @@ from .views import *
 urlpatterns = [
     path('', main),
     # path('catalog/', catalog),
-    path('products/', products),
+    path('products/', products, name='books'),
     path('feedback/', add_feedback),
     path('branch/', branch),
     path('book/add/', add_product),
+    path('book/edit/<slug:book_url>/', edit_book, name='edit_book'),
     path('news/add/', add_news, name='add_news'),
     path('news/edit/<slug:news_url>/', edit_news, name='edit_news'),
     path('news/delete/<slug:news_url>/', delete_news, name='delete_news'),
